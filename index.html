@@ -27,8 +27,10 @@
     background: var(--dark);
     color: var(--white);
     overflow-x: hidden;
-    cursor: none;
+    cursor: none !important;
   }
+
+  *:not(input):not(textarea):not(select) { cursor: none !important; }
 
   /* Custom cursor */
   .cursor {
@@ -1068,15 +1070,39 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Custom cursor
+  // Custom cursor - robust implementation
   const cursor = document.getElementById('cursor');
   const trail = document.getElementById('cursorTrail');
   let mx = 0, my = 0, tx = 0, ty = 0;
+  let cursorVisible = false;
+
+  // Hide cursors initially until mouse moves
+  cursor.style.opacity = '0';
+  trail.style.opacity = '0';
 
   document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
+    mx = e.clientX;
+    my = e.clientY;
+
+    // Show on first move
+    if (!cursorVisible) {
+      cursorVisible = true;
+      cursor.style.opacity = '1';
+      trail.style.opacity = '0.5';
+    }
+
     cursor.style.left = mx + 'px';
     cursor.style.top = my + 'px';
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+    trail.style.opacity = '0';
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+    trail.style.opacity = '0.5';
   });
 
   function animateTrail() {
@@ -1088,18 +1114,22 @@
   }
   animateTrail();
 
-  document.querySelectorAll('a, button, .project-card, .comp-card, .about-card').forEach(el => {
+  document.querySelectorAll('a, button, .project-card, .comp-card, .about-card, .tag, .contact-link, .btn-primary, .btn-secondary').forEach(el => {
     el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      trail.style.width = '50px';
-      trail.style.height = '50px';
+      cursor.style.width = '22px';
+      cursor.style.height = '22px';
+      cursor.style.background = '#FF5499';
+      trail.style.width = '52px';
+      trail.style.height = '52px';
+      trail.style.borderColor = '#FF5499';
     });
     el.addEventListener('mouseleave', () => {
       cursor.style.width = '14px';
       cursor.style.height = '14px';
+      cursor.style.background = 'var(--hot-pink)';
       trail.style.width = '36px';
       trail.style.height = '36px';
+      trail.style.borderColor = 'var(--hot-pink)';
     });
   });
 
