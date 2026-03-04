@@ -1,0 +1,120 @@
+<!-- ============================================
+     TAYLOR MEMON | CUSTOM CURSOR EFFECT
+     Drop this into any HTML file to add the 
+     pink cursor + trailing ring mouse effect.
+     ============================================ -->
+
+
+<!-- STEP 1: Paste this CSS inside your <style> tag -->
+<style>
+  /* Hide default cursor on everything */
+  *:not(input):not(textarea):not(select) {
+    cursor: none !important;
+  }
+
+  /* The small filled dot */
+  .cursor {
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    background: #FF2D78;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+    mix-blend-mode: difference;
+  }
+
+  /* The larger trailing ring */
+  .cursor-trail {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #FF2D78;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.2s ease;
+    opacity: 0.5;
+  }
+</style>
+
+
+<!-- STEP 2: Paste these two divs right after your opening <body> tag -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+
+<!-- STEP 3: Paste this <script> right before your closing </body> tag -->
+<script>
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursorTrail');
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  let cursorVisible = false;
+
+  // Hidden until first mouse move
+  cursor.style.opacity = '0';
+  trail.style.opacity = '0';
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+
+    if (!cursorVisible) {
+      cursorVisible = true;
+      cursor.style.opacity = '1';
+      trail.style.opacity = '0.5';
+    }
+
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  // Hide when mouse leaves the window
+  document.addEventListener('mouseleave', () => {
+    cursor.style.opacity = '0';
+    trail.style.opacity = '0';
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.opacity = '1';
+    trail.style.opacity = '0.5';
+  });
+
+  // Smooth trailing animation
+  function animateTrail() {
+    tx += (mx - tx) * 0.12;
+    ty += (my - ty) * 0.12;
+    trail.style.left = tx + 'px';
+    trail.style.top = ty + 'px';
+    requestAnimationFrame(animateTrail);
+  }
+  animateTrail();
+
+  // Grow effect on hover over interactive elements
+  // Add or remove selectors below to customize which elements trigger the effect
+  const hoverTargets = document.querySelectorAll(
+    'a, button, input, label, [role="button"], .card, .btn, img'
+  );
+
+  hoverTargets.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '22px';
+      cursor.style.height = '22px';
+      cursor.style.background = '#FF5499';
+      trail.style.width = '52px';
+      trail.style.height = '52px';
+      trail.style.borderColor = '#FF5499';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '14px';
+      cursor.style.height = '14px';
+      cursor.style.background = '#FF2D78';
+      trail.style.width = '36px';
+      trail.style.height = '36px';
+      trail.style.borderColor = '#FF2D78';
+    });
+  });
+</script>
