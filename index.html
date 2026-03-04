@@ -33,8 +33,10 @@
   *:not(input):not(textarea):not(select) { cursor: none !important; }
 
   /* Custom cursor */
-  .cursor {
+  #cursor {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 14px;
     height: 14px;
     background: var(--hot-pink);
@@ -42,22 +44,24 @@
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+    transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, opacity 0.3s ease;
     mix-blend-mode: difference;
+    opacity: 0;
   }
-  .cursor-trail {
+  #cursorTrail {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 36px;
     height: 36px;
-    border: 1.5px solid var(--hot-pink);
+    border: 2px solid var(--hot-pink);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
     transform: translate(-50%, -50%);
-    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
-    opacity: 0.5;
+    transition: width 0.25s ease, height 0.25s ease, border-color 0.15s ease, opacity 0.3s ease;
+    opacity: 0;
   }
-  body:hover .cursor { opacity: 1; }
 
   /* Nav */
   nav {
@@ -754,8 +758,8 @@
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursorTrail"></div>
+<div id="cursor"></div>
+<div id="cursorTrail"></div>
 
 <!-- Nav -->
 <nav>
@@ -1070,66 +1074,56 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Custom cursor - robust implementation
+  // Custom cursor
   const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursorTrail');
-  let mx = 0, my = 0, tx = 0, ty = 0;
-  let cursorVisible = false;
-
-  // Hide cursors initially until mouse moves
-  cursor.style.opacity = '0';
-  trail.style.opacity = '0';
+  const trail  = document.getElementById('cursorTrail');
+  let mx = 0, my = 0, tx = 0, ty = 0, visible = false;
 
   document.addEventListener('mousemove', e => {
     mx = e.clientX;
     my = e.clientY;
-
-    // Show on first move
-    if (!cursorVisible) {
-      cursorVisible = true;
-      cursor.style.opacity = '1';
-      trail.style.opacity = '0.5';
-    }
-
     cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
+    cursor.style.top  = my + 'px';
+    if (!visible) {
+      visible = true;
+      cursor.style.opacity = '1';
+      trail.style.opacity  = '0.6';
+    }
   });
 
   document.addEventListener('mouseleave', () => {
     cursor.style.opacity = '0';
-    trail.style.opacity = '0';
+    trail.style.opacity  = '0';
   });
-
   document.addEventListener('mouseenter', () => {
     cursor.style.opacity = '1';
-    trail.style.opacity = '0.5';
+    trail.style.opacity  = '0.6';
   });
 
-  function animateTrail() {
+  (function animateTrail() {
     tx += (mx - tx) * 0.12;
     ty += (my - ty) * 0.12;
     trail.style.left = tx + 'px';
-    trail.style.top = ty + 'px';
+    trail.style.top  = ty + 'px';
     requestAnimationFrame(animateTrail);
-  }
-  animateTrail();
+  })();
 
   document.querySelectorAll('a, button, .project-card, .comp-card, .about-card, .tag, .contact-link, .btn-primary, .btn-secondary').forEach(el => {
     el.addEventListener('mouseenter', () => {
-      cursor.style.width = '22px';
-      cursor.style.height = '22px';
+      cursor.style.width      = '22px';
+      cursor.style.height     = '22px';
       cursor.style.background = '#FF5499';
-      trail.style.width = '52px';
-      trail.style.height = '52px';
+      trail.style.width       = '52px';
+      trail.style.height      = '52px';
       trail.style.borderColor = '#FF5499';
     });
     el.addEventListener('mouseleave', () => {
-      cursor.style.width = '14px';
-      cursor.style.height = '14px';
-      cursor.style.background = 'var(--hot-pink)';
-      trail.style.width = '36px';
-      trail.style.height = '36px';
-      trail.style.borderColor = 'var(--hot-pink)';
+      cursor.style.width      = '14px';
+      cursor.style.height     = '14px';
+      cursor.style.background = '#FF2D78';
+      trail.style.width       = '36px';
+      trail.style.height      = '36px';
+      trail.style.borderColor = '#FF2D78';
     });
   });
 
