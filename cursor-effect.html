@@ -1,120 +1,154 @@
-<!-- ============================================
-     TAYLOR MEMON | CUSTOM CURSOR EFFECT
-     Drop this into any HTML file to add the 
-     pink cursor + trailing ring mouse effect.
-     ============================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Cursor Effect</title>
+  <style>
 
-
-<!-- STEP 1: Paste this CSS inside your <style> tag -->
-<style>
-  /* Hide default cursor on everything */
-  *:not(input):not(textarea):not(select) {
-    cursor: none !important;
-  }
-
-  /* The small filled dot */
-  .cursor {
-    position: fixed;
-    width: 14px;
-    height: 14px;
-    background: #FF2D78;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-    mix-blend-mode: difference;
-  }
-
-  /* The larger trailing ring */
-  .cursor-trail {
-    position: fixed;
-    width: 36px;
-    height: 36px;
-    border: 1.5px solid #FF2D78;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, border-color 0.2s ease;
-    opacity: 0.5;
-  }
-</style>
-
-
-<!-- STEP 2: Paste these two divs right after your opening <body> tag -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-trail" id="cursorTrail"></div>
-
-
-<!-- STEP 3: Paste this <script> right before your closing </body> tag -->
-<script>
-  const cursor = document.getElementById('cursor');
-  const trail = document.getElementById('cursorTrail');
-  let mx = 0, my = 0, tx = 0, ty = 0;
-  let cursorVisible = false;
-
-  // Hidden until first mouse move
-  cursor.style.opacity = '0';
-  trail.style.opacity = '0';
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-
-    if (!cursorVisible) {
-      cursorVisible = true;
-      cursor.style.opacity = '1';
-      trail.style.opacity = '0.5';
+    /* ── CURSOR STYLES ── */
+    *:not(input):not(textarea):not(select) {
+      cursor: none !important;
     }
 
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
+    #cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      background: #FF2D78;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, opacity 0.3s ease;
+      mix-blend-mode: difference;
+      opacity: 0;
+    }
 
-  // Hide when mouse leaves the window
-  document.addEventListener('mouseleave', () => {
-    cursor.style.opacity = '0';
-    trail.style.opacity = '0';
-  });
+    #cursorTrail {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 2px solid #FF2D78;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s ease, height 0.25s ease, border-color 0.15s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
 
-  document.addEventListener('mouseenter', () => {
-    cursor.style.opacity = '1';
-    trail.style.opacity = '0.5';
-  });
+    /* ── DEMO PAGE STYLES ── */
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0A0018;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      text-align: center;
+      padding: 2rem;
+    }
 
-  // Smooth trailing animation
-  function animateTrail() {
-    tx += (mx - tx) * 0.12;
-    ty += (my - ty) * 0.12;
-    trail.style.left = tx + 'px';
-    trail.style.top = ty + 'px';
-    requestAnimationFrame(animateTrail);
-  }
-  animateTrail();
+    h1 { color: #FF2D78; font-size: 2rem; margin: 0; }
+    p  { color: rgba(255,255,255,0.5); max-width: 400px; line-height: 1.7; margin: 0; }
 
-  // Grow effect on hover over interactive elements
-  // Add or remove selectors below to customize which elements trigger the effect
-  const hoverTargets = document.querySelectorAll(
-    'a, button, input, label, [role="button"], .card, .btn, img'
-  );
+    .demo-btn {
+      padding: 0.8rem 2rem;
+      background: #FF2D78;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
 
-  hoverTargets.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '22px';
-      cursor.style.height = '22px';
-      cursor.style.background = '#FF5499';
-      trail.style.width = '52px';
-      trail.style.height = '52px';
-      trail.style.borderColor = '#FF5499';
+    a { color: #FF2D78; }
+
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR ELEMENTS — paste right after <body> in your site -->
+  <div id="cursor"></div>
+  <div id="cursorTrail"></div>
+
+  <!-- Demo content -->
+  <h1>✦ Custom Cursor Demo</h1>
+  <p>Move your mouse around to see the pink dot + trailing ring effect. Hover over the button or link below to see the grow effect.</p>
+  <button class="demo-btn">Hover over me</button>
+  <a href="#">Or hover this link</a>
+
+  <!-- CURSOR SCRIPT — paste right before </body> in your site -->
+  <script>
+    const cursor      = document.getElementById('cursor');
+    const trail       = document.getElementById('cursorTrail');
+    let mx = 0, my = 0;
+    let tx = 0, ty = 0;
+    let visible = false;
+
+    // Move dot instantly with mouse
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+
+      if (!visible) {
+        visible = true;
+        cursor.style.opacity = '1';
+        trail.style.opacity  = '0.6';
+      }
     });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '14px';
-      cursor.style.height = '14px';
-      cursor.style.background = '#FF2D78';
-      trail.style.width = '36px';
-      trail.style.height = '36px';
-      trail.style.borderColor = '#FF2D78';
+
+    // Hide when mouse leaves page
+    document.addEventListener('mouseleave', () => {
+      cursor.style.opacity = '0';
+      trail.style.opacity  = '0';
     });
-  });
-</script>
+    document.addEventListener('mouseenter', () => {
+      cursor.style.opacity = '1';
+      trail.style.opacity  = '0.6';
+    });
+
+    // Trail follows with smooth lag
+    (function animateTrail() {
+      tx += (mx - tx) * 0.12;
+      ty += (my - ty) * 0.12;
+      trail.style.left = tx + 'px';
+      trail.style.top  = ty + 'px';
+      requestAnimationFrame(animateTrail);
+    })();
+
+    // Grow on hover — add any selectors you need
+    document.querySelectorAll('a, button, [role="button"]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width      = '22px';
+        cursor.style.height     = '22px';
+        cursor.style.background = '#FF5499';
+        trail.style.width       = '52px';
+        trail.style.height      = '52px';
+        trail.style.borderColor = '#FF5499';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width      = '14px';
+        cursor.style.height     = '14px';
+        cursor.style.background = '#FF2D78';
+        trail.style.width       = '36px';
+        trail.style.height      = '36px';
+        trail.style.borderColor = '#FF2D78';
+      });
+    });
+  </script>
+
+</body>
+</html>
