@@ -42,20 +42,11 @@
     height: 40px;
     border-radius: 50%;
     border: 2px solid #FF2D78;
-    box-shadow:
-      0 0 6px #FF2D78,
-      0 0 12px #FF2D78,
-      0 0 24px #CC00FF;
+    box-shadow: 0 0 8px #FF2D78, 0 0 20px #FF2D78, 0 0 40px #9B30FF;
     pointer-events: none;
     z-index: 9998;
     transform: translate(-50%, -50%);
-    transition:
-      width 0.2s ease,
-      height 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease,
-      opacity 0.3s ease;
-    opacity: 0;
+    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   #neon-dot {
@@ -65,20 +56,11 @@
     height: 8px;
     border-radius: 50%;
     background: white;
-    box-shadow:
-      0 0 4px #fff,
-      0 0 8px #FF2D78,
-      0 0 16px #FF2D78,
-      0 0 30px #9B30FF;
+    box-shadow: 0 0 6px #fff, 0 0 12px #FF2D78, 0 0 24px #9B30FF;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition:
-      width 0.15s ease,
-      height 0.15s ease,
-      box-shadow 0.2s ease,
-      opacity 0.3s ease;
-    opacity: 0;
+    transition: width 0.15s ease, height 0.15s ease, box-shadow 0.2s ease;
   }
 
   .spark {
@@ -230,7 +212,6 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
-    cursor: none;
     transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
     box-shadow: 0 0 40px rgba(255,45,120,0.4);
   }
@@ -251,7 +232,6 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
-    cursor: none;
     transition: border-color 0.2s, background 0.2s;
   }
   .btn-secondary:hover {
@@ -501,7 +481,6 @@
     position: relative;
     overflow: hidden;
     transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-    cursor: none;
   }
   .project-card::after {
     content: '';
@@ -803,7 +782,7 @@
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:taylor.memon@gmail.com" class="btn-primary" style="font-size:0.75rem;padding:0.6rem 1.4rem;">Get In Touch</a>
+  <a href="/cdn-cgi/l/email-protection#bcc8ddc5d0d3ce92d1d9d1d3d2fcdbd1ddd5d092dfd3d1" class="btn-primary" style="font-size:0.75rem;padding:0.6rem 1.4rem;">Get In Touch</a>
 </nav>
 
 <!-- Hero -->
@@ -1090,11 +1069,11 @@
     <h2 class="contact-big-text">Let's work together.</h2>
     <p class="contact-sub">Ready to drive strategy, build systems, and create content that delivers real results? Let's connect.</p>
     <div class="contact-links">
-      <a href="mailto:taylor.memon@gmail.com" class="contact-link"><span>✉️</span> taylor.memon@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#daaebba3b6b5a8f4b7bfb7b5b49abdb7bbb3b6f4b9b5b7" class="contact-link"><span>✉️</span> <span class="__cf_email__" data-cfemail="ea9e8b93868598c4878f878584aa8d878b8386c4898587">[email&#160;protected]</span></a>
       <a href="tel:7035176894" class="contact-link"><span>📞</span> 703-517-6894</a>
       <a href="https://www.linkedin.com/in/taylor-memon" target="_blank" class="contact-link"><span>💼</span> linkedin.com/in/taylor-memon</a>
     </div>
-    <a href="mailto:taylor.memon@gmail.com" class="btn-primary" style="display:inline-block;">Send Me a Message</a>
+    <a href="/cdn-cgi/l/email-protection#2753465e4b4855094a424a484967404a464e4b0944484a" class="btn-primary" style="display:inline-block;">Send Me a Message</a>
   </div>
 </section>
 
@@ -1105,34 +1084,20 @@
   <p>Arlington, VA · Updated February 2026</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Neon cursor
   const ring = document.getElementById('neon-ring');
   const dot  = document.getElementById('neon-dot');
-  let mx = 0, my = 0, rx = 0, ry = 0, visible = false;
+  let mx = 0, my = 0, rx = 0, ry = 0;
   const colors = ['#FF2D78', '#E0259A', '#C81DB8', '#B015D6', '#9B30FF'];
   let sparkCount = 0;
 
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', function(e) {
     mx = e.clientX;
     my = e.clientY;
     dot.style.left = mx + 'px';
     dot.style.top  = my + 'px';
-    if (!visible) {
-      visible = true;
-      dot.style.opacity  = '1';
-      ring.style.opacity = '1';
-    }
     spawnSpark(mx, my);
-  });
-
-  document.addEventListener('mouseleave', () => {
-    dot.style.opacity  = '0';
-    ring.style.opacity = '0';
-  });
-  document.addEventListener('mouseenter', () => {
-    dot.style.opacity  = '1';
-    ring.style.opacity = '1';
   });
 
   (function animateRing() {
@@ -1190,15 +1155,4 @@
         io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
-
-  reveals.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    io.observe(el);
-  });
-
-  // Nav active on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll(
+  }, { thresho
